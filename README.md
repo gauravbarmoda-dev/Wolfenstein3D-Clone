@@ -4,13 +4,13 @@ A classic Wolfenstein 3D / Doom style raycasting engine built from scratch using
 
 ## Requirements
 
-[Raylib](https://github.com/raysan5/raylib) installed on your system (with its dependencies like OpenGL, X11, etc.)
-C++ Compiler (g++)
-Make
+- [Raylib](https://github.com/raysan5/raylib) installed on your system (with its dependencies like OpenGL, X11, etc.)
+- C++ Compiler (g++)
+- Make
 
 ## Building and Running
 
-Clone the repository:
+1. Clone the repository:
 ```bash
 git clone https://github.com/gauravbarmoda-dev/Wolfenstein3D-Clone.git
 cd Wolfenstein3D-Clone
@@ -24,4 +24,4 @@ make
 ./bin/doom_game
 ```
 
-Thanks;
+Thanks
