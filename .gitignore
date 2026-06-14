@@ -1,0 +1,18 @@
+# Compiled object files
+*.o
+
+# Compiled executables
+bin/
+doom_game
+
+# Map files (if you want to ignore them)
+# ../MapMaker/level.map 
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
