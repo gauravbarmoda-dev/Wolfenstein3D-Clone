@@ -4,7 +4,7 @@ A classic Wolfenstein 3D / Doom style raycasting engine built from scratch using
 
 ## Requirements
 
-- [Raylib](https://github.com/raysan5/raylib) installed on your system (with its dependencies like OpenGL, X11, etc.)
+- Raylib installed on your system (with its dependencies like OpenGL, X11, etc.)
 - C++ Compiler (g++)
 - Make
 
@@ -23,5 +23,10 @@ make
 ```bash
 ./bin/doom_game
 ```
+4. Source:
+- [Raylib Cheatsheet](https://www.raylib.com/cheatsheet/cheatsheet.html)
+- [F. Permadi's Ray-Casting Tutorial](https://permadi.com/tutorial/raycast/)
+- [Lode's Computer Graphics Tutorial](https://lodev.org/cgtutor/raycasting.html)
+- [3DSage's Make Your Own Raycaster](https://www.youtube.com/watch?v=gYRrGTC7uYw)
 
-Thanks
+Thanks.

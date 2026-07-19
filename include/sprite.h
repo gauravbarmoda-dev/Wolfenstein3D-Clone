@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 
-#define NO_OF_SPRITES 10
+#define NO_OF_SPRITES 13
 
 extern Image Textures[NO_OF_SPRITES];
 

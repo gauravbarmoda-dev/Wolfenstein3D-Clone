@@ -12,7 +12,10 @@ const char* texturePath[NO_OF_SPRITES] = {
     "Sprites/yellow_wall.png",
     "Sprites/lime_wall.png",
     "Sprites/floor.png",
-    "Sprites/ceiling.png"
+    "Sprites/ceiling.png",
+    "Sprites/enemy1.png",
+    "Sprites/enemy2.png",
+    "Sprites/enemy3.png"
 };
 
 void LoadGameSprites(){

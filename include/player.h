@@ -9,18 +9,21 @@ class MAP2D;
 class PLAYER{
 public:
     Vector2 p;  
+    int curWeapon;
     float angle;
     float rotationSpeed; 
     float movementSpeed;
     float hitbox;
 
-    PLAYER();
+    PLAYER(float x, float y, float a, float rs, float ms, float hb, int cw);
 
     void Update(MAP2D *map);
 
     void Draw();
 
-    void CheckIntersection(MAP2D *map);    
+    void CheckIntersection(MAP2D *map);
+
+    void Shoot(MAP2D *map);
 };
 
 #endif

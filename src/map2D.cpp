@@ -20,10 +20,10 @@ MAP2D::MAP2D() {
             }
         }
         
-        std::cout << "SUCCESS: Loaded level.map! Size: " << mapWidth << "x" << mapHeight << std::endl;
+        std::cout << "SUCCESS: Loaded level.map. Size: " << mapWidth << "x" << mapHeight << std::endl;
     } 
     else {
-        std::cout << "WARNING: Could not find ../MapMaker/level.map! Generating default 24x24 box." << std::endl;
+        std::cout << "WARNING: Could not find ../MapMaker/level.map. Generating default 24x24 box." << std::endl;
         mapWidth = 24;
         mapHeight = 24;
         mapData.resize(mapWidth * mapHeight, 0);
