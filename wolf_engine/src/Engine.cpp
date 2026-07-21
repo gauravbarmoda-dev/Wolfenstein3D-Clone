@@ -1,6 +1,5 @@
 #include "../include/Engine.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_render.h>
 #include <iostream>
 
 Engine::Engine() : window(nullptr), renderer(nullptr), isRunning(false), lastFrameTime(0), deltaTime(0.0f) {}
@@ -58,7 +57,7 @@ void Engine::Update(){
     
     SDL_Event event;
     while(SDL_PollEvent(&event)){
-        if(*event.type == SDL_Quit){
+        if(event.type == SDL_QUIT){
             isRunning = false;
         }
     }

@@ -23,7 +23,7 @@ public:
     ~Engine();
 
     bool Initialize(int width, int height, const char* title);
-    void Quit();
     void Update();
+    void Quit();
 };
 #endif
