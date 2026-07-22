@@ -49,7 +49,7 @@ void Renderer::Clear(uint32_t color){
 }
 
 void Renderer::ClearHorizon(uint32_t ceil, uint32_t floor){
-    int totalPixels = width & height;
+    int totalPixels = width * height;
     int halfPixels  = totalPixels >> 1;
 
     for(int i = 0; i < halfPixels; i++){
@@ -72,12 +72,43 @@ void Renderer::DrawVLine(int x, int startY, int endY, uint32_t color){
     if(startY < 0) startY = 0;
     if(endY >= height) endY = height;
 
+    if(startY >= endY) return;
+
     int pixIndex = startY * width + x;
     for(int y = startY; y < endY; y++){
         pixels[pixIndex] = color;
         pixIndex += width;
     } 
 }
+
+void Renderer::DrawHLine(int y, int startX, int endX, uint32_t color){
+    if(y < 0 || y >= height) return;
+    if(startX < 0) startX = 0;
+    if(endX >= width) endX = width;
+    
+    if(startX >= endX) return;
+
+    int startIndex = y * width + startX;
+    int endIndex   = y * width + endX;
+
+    std::fill(pixels + startIndex, pixels + endIndex, color);
+}
+
+void Renderer::DrawRectangle(int x, int y, int w, int h, bool isFilled, uint32_t color){
+    if(isFilled){
+        for(int i = y; i < y + h; i++){
+            DrawHLine(i, x, x + w, color);
+        }
+    }
+    else{
+        DrawHLine(y, x, x + w, color);
+        DrawVLine(x, y, y + h, color);
+        DrawVLine(x + w - 1, y , y + h, color);
+        DrawHLine(y + h - 1, x, x + w, color);
+    }
+    return;
+}
+
 void Renderer::DrawTexturedVLine(int x, int startY, int endY, int texID, int texX){
     return ;    
 }

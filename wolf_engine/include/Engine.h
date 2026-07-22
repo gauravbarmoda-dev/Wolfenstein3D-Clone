@@ -25,5 +25,10 @@ public:
     bool Initialize(int width, int height, const char* title);
     void Update();
     void Quit();
+
+    bool IsRunning()            {return isRunning;}
+    float GetDeltatime()        {return deltaTime;}
+    Input& GetInput()           {return input;}
+    SDL_Renderer* GetRenderer() {return renderer;}
 };
 #endif

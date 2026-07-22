@@ -26,8 +26,14 @@ public:
     void ClearHorizon(uint32_t ceil, uint32_t floor);
 
     void DrawPixel(int x, int y, uint32_t color);
+    
     void DrawVLine(int x, int startY, int endY, uint32_t color);
+    void DrawHLine(int x, int startX, int endX, uint32_t color);
+    
+    void DrawRectangle(int x, int y, int w, int h, bool isFilled, uint32_t color);
+
     void DrawTexturedVLine(int x, int startY, int endY, int texID, int texX);
+    
 
     void Present(SDL_Renderer* renderer);
 
