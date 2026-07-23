@@ -1,24 +1,24 @@
-#include "../include/Renderer.h"
+#include "Rasterizer.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_render.h>
 #include <algorithm>
 #include <iostream>
 
-Renderer::Renderer() : width(0), height(0), texture(nullptr), pixels(nullptr) {}
+Rasterizer::Rasterizer() : width(0), height(0), texture(nullptr), pixels(nullptr) {}
 
-Renderer::~Renderer(){
+Rasterizer::~Rasterizer(){
     CleanUp();
 }
 
-bool Renderer::Initialize(SDL_Renderer* renderer, int scrWidth, int scrHeight){
+bool Rasterizer::Initialize(SDL_Renderer* renderer, int scrWidth, int scrHeight){
     width  = scrWidth;
     height = scrHeight;
 
-    pixels = new uint32_t[width * height];
+    pixels = new uint16_t[width * height];
 
     texture = SDL_CreateTexture(
         renderer,
-        SDL_PIXELFORMAT_ARGB8888,
+        SDL_PIXELFORMAT_RGB565,
         SDL_TEXTUREACCESS_STREAMING,
         width, height
     );
@@ -31,7 +31,7 @@ bool Renderer::Initialize(SDL_Renderer* renderer, int scrWidth, int scrHeight){
     return true;
 }
 
-void Renderer::CleanUp(){
+void Rasterizer::CleanUp(){
     if(pixels != nullptr){
         delete[] pixels;
         pixels = nullptr;
@@ -43,15 +43,12 @@ void Renderer::CleanUp(){
     return;
 }
 
-void Renderer::Clear(uint32_t color){
+void Rasterizer::Clear(uint16_t color){
     int size = width * height;
-    for(int i = 0; i < size; i++){
-        pixels[i] = color;
-    }
-    return;
+    std::fill_n(pixels, size, color);
 }
 
-void Renderer::ClearHorizon(uint32_t ceil, uint32_t floor){
+void Rasterizer::ClearHorizon(uint16_t ceil, uint16_t floor){
     int totalPixels = width * height;
     int halfPixels  = totalPixels >> 1;
 
@@ -59,13 +56,13 @@ void Renderer::ClearHorizon(uint32_t ceil, uint32_t floor){
     std::fill_n(pixels + halfPixels, halfPixels, floor);
 }
 
-void Renderer::DrawPixel(int x, int y, uint32_t color){
+void Rasterizer::DrawPixel(int x, int y, uint16_t color){
     if(x >= 0 && x < width && y >= 0 && y < height){
         pixels[y * width + x] = color;
     }
 }
 
-void Renderer::DrawVLine(int x, int startY, int endY, uint32_t color){
+void Rasterizer::DrawVLine(int x, int startY, int endY, uint16_t color){
     if(x < 0 || x >= width) return ;
     if(startY < 0) startY = 0;
     if(endY >= height) endY = height;
@@ -79,7 +76,7 @@ void Renderer::DrawVLine(int x, int startY, int endY, uint32_t color){
     } 
 }
 
-void Renderer::DrawHLine(int y, int startX, int endX, uint32_t color){
+void Rasterizer::DrawHLine(int y, int startX, int endX, uint16_t color){
     if(y < 0 || y >= height) return;
     if(startX < 0) startX = 0;
     if(endX >= width) endX = width;
@@ -92,7 +89,7 @@ void Renderer::DrawHLine(int y, int startX, int endX, uint32_t color){
     std::fill(pixels + startIndex, pixels + endIndex, color);
 }
 
-void Renderer::DrawRectangle(int x, int y, int w, int h, bool isFilled, uint32_t color){
+void Rasterizer::DrawRectangle(int x, int y, int w, int h, bool isFilled, uint16_t color){
     if(isFilled){
         for(int i = y; i < y + h; i++){
             DrawHLine(i, x, x + w, color);
@@ -107,12 +104,12 @@ void Renderer::DrawRectangle(int x, int y, int w, int h, bool isFilled, uint32_t
     return;
 }
 
-void Renderer::DrawTexturedVLine(int x, int startY, int endY, int texID, int texX){
+void Rasterizer::DrawTexturedVLine(int x, int startY, int endY, int texID, int texX){
     return ;    
 }
 
-void Renderer::Present(SDL_Renderer* renderer){
-    SDL_UpdateTexture(texture, nullptr, pixels, width * sizeof(uint32_t));
+void Rasterizer::Present(SDL_Renderer* renderer){
+    SDL_UpdateTexture(texture, nullptr, pixels, width * sizeof(uint16_t));
     SDL_RenderCopy(renderer, texture, nullptr, nullptr);
     SDL_RenderPresent(renderer);
 }

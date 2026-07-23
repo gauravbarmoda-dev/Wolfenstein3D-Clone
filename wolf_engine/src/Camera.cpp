@@ -1,5 +1,5 @@
-#include "../include/Camera.h"
-#include "../include/Map.h"
+#include "Camera.h"
+#include "Map.h"
 #include <iostream>
 #include <cmath>
 

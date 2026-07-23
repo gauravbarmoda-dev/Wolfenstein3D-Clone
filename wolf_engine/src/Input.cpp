@@ -1,4 +1,4 @@
-#include "../include/Input.h"
+#include "Input.h"
 #include <SDL2/SDL_keyboard.h>
 #include <SDL2/SDL_mouse.h>
 #include <SDL2/SDL_scancode.h>

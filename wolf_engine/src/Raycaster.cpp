@@ -1,7 +1,7 @@
-#include "../include/Raycaster.h"
-#include "../include/Renderer.h"
-#include "../include/Camera.h"
-#include "../include/Map.h"
+#include "Raycaster.h"
+#include "Rasterizer.h"
+#include "Camera.h"
+#include "Map.h"
 #include <cstdint>
 
 Raycaster::Raycaster(int w, int h) : scrWidth(w), scrHeight(h) {
@@ -12,13 +12,14 @@ Raycaster::~Raycaster(){
     delete[] zBuffer;
 }
 
-void Raycaster::Render(Camera* camera, Map* map, Renderer* renderer){
-    uint32_t color;
+void Raycaster::Render(Camera* camera, Map* map, Rasterizer* rasterizer){
+    uint16_t color;
     int tile;
+    float invWidth = 2.0f / (float)scrWidth;
 
     for(int x = 0; x < scrWidth; x++){
-        float cameraX = 2.0f * x / (float)scrWidth - 1.0f;          // normalize camera plane
-        
+        float cameraX = invWidth * x  - 1.0f;                       // normalize camera plane
+
         Vector2 rayDir = camera->dir + (camera->plane * cameraX);   // parametric equation of line P(t) = C + (V * t)
 
         int mapX = (int)camera->pos.x;                              // floating position to 2d map position
@@ -76,7 +77,7 @@ void Raycaster::Render(Camera* camera, Map* map, Renderer* renderer){
         // perpendicular distance to the wall, 
         // since we did not use pythagorus theorem to find the distance, there is minimal fish eye effect
         float wallDistance = (side == 0) ? (sideDist.x - deltaDist.x) : (sideDist.y - deltaDist.y);       
-        if(wallDistance <= 0.0f) wallDistance = 0.1f;        
+        if(wallDistance <= 0.0f) wallDistance = 0.3f;        
 
         zBuffer[x] = wallDistance;
 
@@ -88,9 +89,9 @@ void Raycaster::Render(Camera* camera, Map* map, Renderer* renderer){
         int drawEnd = (scrHeight >> 1) + (vertHeight >> 1);
         if(drawEnd >= scrHeight) drawEnd = scrHeight - 1;
         
-        color = (tile == 1) ? (0xFFFF0000) : (0xFF00FF00);
-        if(side == 1) color = (color >> 1) & 8355711;
+        color = (tile == 1) ? (0xF800) : (0x07E0);
+        if(side == 1) color = (color >> 1) & 0x7BEF;
 
-        renderer->DrawVLine(x, drawStart, drawEnd, color);
+        rasterizer->DrawVLine(x, drawStart, drawEnd, color);
     }
 }

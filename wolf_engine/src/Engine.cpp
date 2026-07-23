@@ -1,4 +1,4 @@
-#include "../include/Engine.h"
+#include "Engine.h"
 #include <SDL2/SDL.h>
 #include <iostream>
 

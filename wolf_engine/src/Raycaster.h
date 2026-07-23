@@ -4,7 +4,7 @@
 #include <vector>
 
 class Camera;
-class Renderer;
+class Rasterizer;
 class Map;
 
 class Raycaster{
@@ -18,7 +18,7 @@ public:
     Raycaster(int w, int h);
     ~Raycaster();
 
-    void Render(Camera *camera, Map* map, Renderer* renderer);
+    void Render(Camera *camera, Map* map, Rasterizer* rasterizer);
 };
 
 #endif
