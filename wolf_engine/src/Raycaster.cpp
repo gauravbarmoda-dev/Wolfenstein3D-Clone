@@ -1,16 +1,96 @@
 #include "../include/Raycaster.h"
+#include "../include/Renderer.h"
 #include "../include/Camera.h"
 #include "../include/Map.h"
-#include "../include/Renderer.h"
+#include <cstdint>
 
 Raycaster::Raycaster(int w, int h) : scrWidth(w), scrHeight(h) {
     zBuffer = new float[scrWidth];
 }
 
 Raycaster::~Raycaster(){
-    delete[] zbuffer;
+    delete[] zBuffer;
 }
 
 void Raycaster::Render(Camera* camera, Map* map, Renderer* renderer){
-    
+    uint32_t color;
+    int tile;
+
+    for(int x = 0; x < scrWidth; x++){
+        float cameraX = 2.0f * x / (float)scrWidth - 1.0f;          // normalize camera plane
+        
+        Vector2 rayDir = camera->dir + (camera->plane * cameraX);   // parametric equation of line P(t) = C + (V * t)
+
+        int mapX = (int)camera->pos.x;                              // floating position to 2d map position
+        int mapY = (int)camera->pos.y;
+
+        Vector2 deltaDist = {                                       // distance ray must travel in it's direction            
+            std::abs(1.0f / rayDir.x),                              // to shift to next closest gridline
+            std::abs(1.0f / rayDir.y)
+        };
+
+        Vector2 sideDist;                                           // distance ray must travel in it's direction
+                                                                    // to shift to next closest gridline on the map 
+        int stepX, stepY;
+
+        // calculating if the indexing should be left or right for the sideDist
+        if(rayDir.x < 0){
+            stepX = -1;
+            sideDist.x = (camera->pos.x - mapX) * deltaDist.x;
+        }
+        else{
+            stepX = 1;
+            sideDist.x = (mapX + 1.0f - camera->pos.x) * deltaDist.x;
+        }
+
+        if(rayDir.y < 0){
+            stepY = -1;
+            sideDist.y = (camera->pos.y - mapY) * deltaDist.y;
+        }
+        else{
+            stepY = 1;
+            sideDist.y = (mapY + 1.0f - camera->pos.y) * deltaDist.y;
+        }
+
+        int side = 0;           // records which axis the ray collided with last. 0 for x, 1 for y
+        bool rayHit = false;
+
+        while(!rayHit){
+            if(sideDist.x < sideDist.y){
+                sideDist.x += deltaDist.x;
+                mapX += stepX; 
+                side = 0;
+            }
+            else{
+                sideDist.y += deltaDist.y;
+                mapY += stepY;
+                side = 1;
+            }
+            
+            tile = map->GetTile(mapX, mapY);
+            if(tile > 0){
+                rayHit = true;
+            }
+        }
+
+        // perpendicular distance to the wall, 
+        // since we did not use pythagorus theorem to find the distance, there is minimal fish eye effect
+        float wallDistance = (side == 0) ? (sideDist.x - deltaDist.x) : (sideDist.y - deltaDist.y);       
+        if(wallDistance <= 0.0f) wallDistance = 0.1f;        
+
+        zBuffer[x] = wallDistance;
+
+        int vertHeight = (int)(scrHeight / wallDistance);
+
+        int drawStart = (scrHeight >> 1) - (vertHeight >> 1);
+        if(drawStart < 0) drawStart = 0;
+
+        int drawEnd = (scrHeight >> 1) + (vertHeight >> 1);
+        if(drawEnd >= scrHeight) drawEnd = scrHeight - 1;
+        
+        color = (tile == 1) ? (0xFFFF0000) : (0xFF00FF00);
+        if(side == 1) color = (color >> 1) & 8355711;
+
+        renderer->DrawVLine(x, drawStart, drawEnd, color);
+    }
 }

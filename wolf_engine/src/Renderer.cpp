@@ -1,11 +1,14 @@
 #include "../include/Renderer.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_render.h>
+#include <algorithm>
 #include <iostream>
 
 Renderer::Renderer() : width(0), height(0), texture(nullptr), pixels(nullptr) {}
 
-Renderer::~Renderer(){}
+Renderer::~Renderer(){
+    CleanUp();
+}
 
 bool Renderer::Initialize(SDL_Renderer* renderer, int scrWidth, int scrHeight){
     width  = scrWidth;
@@ -52,13 +55,8 @@ void Renderer::ClearHorizon(uint32_t ceil, uint32_t floor){
     int totalPixels = width * height;
     int halfPixels  = totalPixels >> 1;
 
-    for(int i = 0; i < halfPixels; i++){
-        pixels[i] = ceil;
-    }
-    
-    for(int i = halfPixels; i < totalPixels; i++){
-        pixels[i] = floor;
-    }
+    std::fill_n(pixels, halfPixels, ceil);
+    std::fill_n(pixels + halfPixels, halfPixels, floor);
 }
 
 void Renderer::DrawPixel(int x, int y, uint32_t color){

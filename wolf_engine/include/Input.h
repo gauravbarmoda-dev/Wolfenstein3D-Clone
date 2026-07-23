@@ -4,7 +4,7 @@
 #include <vector>
 
 enum class Keys{
-    W, A, S, D
+    W, A, S, D, E, Q
 };
 
 class Input{

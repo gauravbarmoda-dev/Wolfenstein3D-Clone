@@ -48,10 +48,8 @@ public:
     ~Camera() = default;
 
     void Rotate         (float angleRadius);
-    void MoveForward    (float distance, Map* map);
-    void MoveBackward   (float distance, Map* map);
-    void StrafeLeft     (float distance, Map* map);
-    void StrafeRight    (float distance, Map* map);
+    void Move           (float distance, Map* map);
+    void Strafe         (float distance, Map* map);
 }; 
 
 #endif

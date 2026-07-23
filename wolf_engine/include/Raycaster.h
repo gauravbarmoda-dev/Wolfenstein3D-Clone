@@ -15,7 +15,7 @@ private:
     float* zBuffer;
 
 public:
-    Raycaster();
+    Raycaster(int w, int h);
     ~Raycaster();
 
     void Render(Camera *camera, Map* map, Renderer* renderer);

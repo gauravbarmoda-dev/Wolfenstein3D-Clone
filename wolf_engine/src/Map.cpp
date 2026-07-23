@@ -4,7 +4,7 @@
 #include <fstream>
 
 Map::Map(){
-    std::ifstream in("../maps/level.map");                                                                                           
+    std::ifstream in("wolf_engine/maps/level.map");                                                                                           
                                                                                                                                              
     if (in.is_open()) {                                                                                                                  
         in >> mapWidth >> mapHeight;                                                                                                     
@@ -38,6 +38,8 @@ Map::Map(){
         }
     }
 }
+
+Map::~Map() {}
 
 char Map::GetTile(int x, int y){
     if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) return 1;

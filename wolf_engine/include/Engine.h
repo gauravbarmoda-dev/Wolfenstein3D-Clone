@@ -27,7 +27,7 @@ public:
     void Quit();
 
     bool IsRunning()            {return isRunning;}
-    float GetDeltatime()        {return deltaTime;}
+    float GetDeltaTime()        {return deltaTime;}
     Input& GetInput()           {return input;}
     SDL_Renderer* GetRenderer() {return renderer;}
 };
